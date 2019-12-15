@@ -474,7 +474,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --enable-kvm \
   --enable-libiscsi \
   --disable-libnfs \
-  --disable-libssh \
+  --enable-libssh \
   --enable-libusb \
   --disable-bzip2 \
   --enable-linux-aio \
@@ -502,7 +502,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --enable-attr \
   --disable-bsd-user \
   --disable-cocoa \
-  --enable-debug-info \
+  --disable-debug-info \
   --disable-guest-agent-msi \
   --disable-hax \
   --disable-tcmalloc \
@@ -676,26 +676,27 @@ chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man8/*
 install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/%{name}.conf
 
 # Provided by package openbios
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-ppc
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-sparc32
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-sparc64
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-ppc
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-sparc32
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-sparc64
 # Provided by package SLOF
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/slof.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/slof.bin
 
 # Remove unpackaged files.
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/palcode-clipper
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/petalogix*.dtb
-#rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/bamboo.dtb
-#rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/ppc_rom.bin
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/s390-zipl.rom
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/u-boot.e500
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/qemu_vga.ndrv
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/skiboot.lid
-#
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/s390-ccw.img
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/hppa-firmware.img
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/canyonlands.dtb
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/u-boot-sam460-20100605.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/palcode-clipper
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/petalogix*.dtb
+rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/bamboo.dtb
+rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/ppc_rom.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/s390-zipl.rom
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/u-boot.e500
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/qemu_vga.ndrv
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/skiboot.lid
+
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/s390-ccw.img
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/hppa-firmware.img
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/canyonlands.dtb
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/u-boot-sam460-20100605.bin
+rm -f ${RPM_BUILD_ROOT}%{_datadir}/systemtap/tapset/qemu-system-x86_64-log.stp
 
 %ifarch s390x
     # Use the s390-ccw.img that we've just built, not the pre-built one
@@ -715,12 +716,12 @@ install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/%{name}.conf
 %endif
 
 # Remove sparc files
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/QEMU,tcx.bin
-#rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/QEMU,cgthree.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/QEMU,tcx.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/QEMU,cgthree.bin
 
 # Remove ivshmem example programs
-#rm -rf ${RPM_BUILD_ROOT}%{_bindir}/ivshmem-client
-#rm -rf ${RPM_BUILD_ROOT}%{_bindir}/ivshmem-server
+rm -rf ${RPM_BUILD_ROOT}%{_bindir}/ivshmem-client
+rm -rf ${RPM_BUILD_ROOT}%{_bindir}/ivshmem-server
 
 # Remove efi roms
 rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/efi*.rom
@@ -733,6 +734,9 @@ rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/vgabios*bin
 rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/bios*.bin
 # Provided by package sgabios
 rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/sgabios.bin
+# Provided by package edk2
+rm -rf %{buildroot}%{_datadir}/%{name}/edk2*
+rm -rf %{buildroot}%{_datadir}/%{name}/firmware/*edk2*.json
 
 # the pxe gpxe images will be symlinks to the images on
 # /usr/share/ipxe, as QEMU doesn't know how to look
@@ -859,9 +863,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_libexecdir}/qemu-kvm \
 %{_datadir}/systemtap/tapset/qemu-kvm.stp \
 %{_datadir}/%{name}/trace-events-all \
-%{_datadir}/systemtap/tapset/qemu-kvm-simpletrace.stp \
-%{_datadir}/%{name}/systemtap/script.d/qemu_kvm.stp \
-%{_datadir}/%{name}/systemtap/conf.d/qemu_kvm.conf
+%{_datadir}/systemtap/tapset/qemu-kvm-simpletrace.stp
 
 %files
 # Deliberately empty
@@ -871,26 +873,36 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %defattr(-,root,root)
 %dir %{qemudocdir}
 %doc %{qemudocdir}/Changelog
-%doc %{qemudocdir}/README
 %doc %{qemudocdir}/qemu-doc.html
 %doc %{qemudocdir}/COPYING
 %doc %{qemudocdir}/COPYING.LIB
 %doc %{qemudocdir}/LICENSE
-%doc %{qemudocdir}/README.systemtap
 %doc %{qemudocdir}/qmp-spec.txt
 %doc %{qemudocdir}/qemu-doc.txt
 %doc %{qemudocdir}/qemu-ga-ref.html
 %doc %{qemudocdir}/qemu-ga-ref.txt
 %doc %{qemudocdir}/qemu-qmp-ref.html
 %doc %{qemudocdir}/qemu-qmp-ref.txt
+%doc %{qemudocdir}/interop
+%doc %{qemudocdir}/specs
 %{_mandir}/man7/qemu-qmp-ref.7*
+%{_libdir}/qemu-kvm/ui-spice-app.so
 %{_bindir}/qemu-keymap
 %{_bindir}/qemu-pr-helper
+%{_bindir}/elf2dmp
+%{_bindir}/qemu-edid
+%{_bindir}/qemu-trace-stap
+%{_bindir}/virtfs-proxy-helper
 %{_unitdir}/qemu-pr-helper.service
 %{_unitdir}/qemu-pr-helper.socket
 %{_mandir}/man7/qemu-ga-ref.7*
-
+%{_mandir}/man7/qemu-cpu-models.7.gz
+%{_mandir}/man1/qemu-trace-stap.1.gz
+%{_mandir}/man1/virtfs-proxy-helper.1.gz
 %dir %{_datadir}/%{name}/
+%{_datadir}/applications/qemu.desktop
+%{_datadir}/icons/hicolor/*/apps/*
+%exclude %{_datadir}/%{name}/qemu-nsis.bmp
 %{_datadir}/%{name}/keymaps/
 %{_mandir}/man1/%{name}.1*
 %{_mandir}/man7/qemu-block-drivers.7*
@@ -923,6 +935,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
     %{_datadir}/%{name}/multiboot.bin
     %{_datadir}/%{name}/kvmvapic.bin
     %{_datadir}/%{name}/sgabios.bin
+    %{_datadir}/%{name}/pvh.bin
 %endif
 %ifarch s390x
     %{_datadir}/%{name}/s390-ccw.img
@@ -947,9 +960,8 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
     %{_datadir}/%{name}/efi-virtio.rom
     %{_datadir}/%{name}/efi-vmxnet3.rom
 %endif
-%{_datadir}/%{name}/qemu-icon.bmp
-%{_datadir}/%{name}/qemu_logo_no_text.svg
 %{_datadir}/%{name}/linuxboot_dma.bin
+%{_datadir}/%{name}/opensbi-riscv*.bin
 %{_datadir}/%{name}/dump-guest-memory.py*
 %ifarch %{power64}
     %{_datadir}/%{name}/spapr-rtas.bin
@@ -974,7 +986,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 %files -n qemu-guest-agent
 %defattr(-,root,root,-)
-%doc COPYING README
 %{_bindir}/qemu-ga
 %{_mandir}/man8/qemu-ga.8*
 %{_unitdir}/qemu-guest-agent.service
