@@ -71,7 +71,7 @@ URL: http://www.qemu.org/
 ExclusiveArch: x86_64 %{power64} aarch64 s390x
 
 
-Source0: http://wiki.qemu.org/download/qemu-%{version}.tar.xz
+Source0: https://wiki.qemu.org/download/qemu-%{version}.tar.xz
 
 # KSM control scripts
 Source4: ksm.service
