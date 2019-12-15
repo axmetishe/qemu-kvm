@@ -1,0 +1,34 @@
+--- a/Makefile
++++ b/Makefile
+@@ -804,7 +804,7 @@ install-doc: $(DOCS)
+ 	$(INSTALL_DATA) docs/interop/qemu-qmp-ref.txt "$(DESTDIR)$(qemu_docdir)"
+ ifdef CONFIG_POSIX
+ 	$(INSTALL_DIR) "$(DESTDIR)$(mandir)/man1"
+-	$(INSTALL_DATA) qemu.1 "$(DESTDIR)$(mandir)/man1"
++	$(INSTALL_DATA) qemu.1 "$(DESTDIR)$(mandir)/man1/qemu-kvm.1"
+ 	$(INSTALL_DIR) "$(DESTDIR)$(mandir)/man7"
+ 	$(INSTALL_DATA) docs/interop/qemu-qmp-ref.7 "$(DESTDIR)$(mandir)/man7"
+ 	$(INSTALL_DATA) docs/qemu-block-drivers.7 "$(DESTDIR)$(mandir)/man7"
+--- a/os-posix.c	(date 1576393208748)
++++ b/os-posix.c	(date 1576393208748)
+@@ -83,7 +83,7 @@
+ /* Find a likely location for support files using the location of the binary.
+    For installed binaries this will be "$bindir/../share/qemu".  When
+    running from the build tree this will be "$bindir/../pc-bios".  */
+-#define SHARE_SUFFIX "/share/qemu"
++#define SHARE_SUFFIX "/share/qemu-kvm"
+ #define BUILD_SUFFIX "/pc-bios"
+ char *os_find_datadir(void)
+ {
+--- a/ui/vnc.c	(date 1576393208764)
++++ b/ui/vnc.c	(date 1576393208764)
+@@ -3987,7 +3987,7 @@
+
+ #ifdef CONFIG_VNC_SASL
+     if (sasl) {
+-        int saslErr = sasl_server_init(NULL, "qemu");
++        int saslErr = sasl_server_init(NULL, "qemu-kvm");
+
+         if (saslErr != SASL_OK) {
+             error_setg(errp, "Failed to initialize SASL auth: %s",
+
