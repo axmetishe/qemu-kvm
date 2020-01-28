@@ -50,6 +50,7 @@
 #Versions of various parts:
 
 %global requires_all_modules                                     \
+Requires: %{name}-core = %{epoch}:%{version}-%{release}          \
 Requires: %{name}-block-curl = %{epoch}:%{version}-%{release}    \
 %if %{have_gluster}                                              \
 Requires: %{name}-block-gluster = %{epoch}:%{version}-%{release} \
