@@ -534,7 +534,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --disable-crypto-afalg \
   --disable-bochs \
   --disable-cloop \
-  --disable-dmg \
+  --enable-dmg \
   --disable-qcow1 \
   --disable-vdi \
   --disable-vvfat \
